@@ -1,23 +1,23 @@
 import requests
 import time
 import datetime
-print(datetime.datetime.now())
 import re
 
 def update_list(new_record):
     f = open("chillradio.txt", "a+")
+    f.seek(0)
     if not new_record in f.read():
-       f.write(new_record)
-       f.write('\n')
-       f.close()
-       print('Added to list: ', stream_title)
-    else:
-       print('Already in list: ', stream_title)
+        f.write(new_record)
+        f.write('\r\n')
+        print('Added to list: ', new_record)
+    f.close()
+        
 
 url = 'https://s35.derstream.net/chillradio.mp3'
 encoding = 'latin1'
 info = ''
 
+print(datetime.datetime.now())
 radio_session = requests.Session()
 
 while True:
@@ -49,8 +49,6 @@ while True:
             else:
                 pass
 
-        else:
-            print('No StreamTitle!')
 
     time.sleep(1)
 
