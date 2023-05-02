@@ -7,8 +7,7 @@ def update_list(new_record):
     f = open("chillradio.txt", "a+")
     f.seek(0)
     if not new_record in f.read():
-        f.write(new_record)
-        f.write('\r\n')
+        f.write(new_record+'\n')
         print('Added to list: ', new_record)
     f.close()
         
@@ -22,7 +21,17 @@ radio_session = requests.Session()
 
 while True:
 
-    radio = radio_session.get(url, headers={'Icy-MetaData': '1'}, stream=True)
+    try:
+        radio = radio_session.get(url, headers={'Icy-MetaData': '1'}, stream=True) #, timeout = 20)
+    except requests.exceptions.Timeout:
+        print("Timeout.")
+        continue
+    except requests.exceptions.ConnectionError:
+        print("Network Unavailable. Check connection.")
+        continue
+    except:
+        print("Unexpected error.")
+        continue
 
     metaint = int(radio.headers['icy-metaint'])
 
