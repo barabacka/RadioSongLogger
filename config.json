@@ -1,0 +1,16 @@
+{
+    "radio list": [
+        [
+            "https://internet_radio/link1.mp3",
+            "list1.txt"
+        ],
+        [
+            "https://internet_radio/link2.mp3",
+            "list1.txt"
+        ],
+        [
+            "https://internet_radio/link3.mp3",
+            "list2.txt"
+        ]
+    ]
+}
