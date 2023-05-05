@@ -1,7 +1,7 @@
 ### RadioSongLogger
 
 A simple code to save online radio playlist to file.
-One or more station...
+One or more stations...
 to one or dedicated text files.
 
 ----

@@ -4,7 +4,11 @@ import datetime
 import re
 import threading
 import json
+import logging
 
+def lprint(str):
+    print(str)
+    logging.info(str)
 
 def update_list(new_record, dst_file):
     try:
@@ -12,7 +16,8 @@ def update_list(new_record, dst_file):
         f.seek(0)
         if not new_record in f.read():
             f.write(new_record+'\n')
-            print('Added to', dst_file, ':', new_record)
+            s = 'Added to '+dst_file+': '+new_record
+            lprint(s)
         f.close()
         return True
     except:
@@ -24,22 +29,22 @@ def do_list(radio_info):
     encoding = 'latin1'
     info = ''
 
-    print('Started task for url:',radio_info[0])
-    print('\tresult will stored in file:',radio_info[1])
-    
+    s = 'Started task for url: '+radio_info[0]+'\n\tresult will stored in file: '+radio_info[1]
+    lprint(s)
+     
     radio_session = requests.Session()
 
     while True:
         try:
             radio = radio_session.get(radio_info[0], headers={'Icy-MetaData': '1'}, stream=True) #, timeout = 20)
         except requests.exceptions.Timeout:
-            print('Timeout.')
+            logging.info('Timeout.')
             continue
         except requests.exceptions.ConnectionError:
-            print('Network Unavailable. Check connection.')
+            logging.info('Network Unavailable. Check connection.')
             continue
         except:
-            print('Unexpected error.')
+            logging.info('Unexpected error.')
             continue
 
         metaint = int(radio.headers['icy-metaint'])
@@ -71,7 +76,8 @@ def do_list(radio_info):
 
 tasks = []
 
-print(datetime.datetime.now())
+logging.basicConfig(level=logging.INFO, filename='logger.log', filemode='a+', format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
+lprint('Started.')
 
 try:
     conf = open('config.json', 'r')
@@ -83,7 +89,7 @@ try:
         tasks.start()
 
 except:
-    print('Wrong config file!')
+    lprint('Wrong config file!')
 
 
 
